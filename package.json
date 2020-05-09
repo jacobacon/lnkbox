@@ -1,0 +1,34 @@
+{
+  "name": "lnkbox",
+  "version": "0.0.1",
+  "description": "A web-app and desktop tool for keeping track of bookmarks, links and archived content.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc"
+  },
+  "keywords": [
+    "bookmark",
+    "link",
+    "archive",
+    "url"
+  ],
+  "author": "Jacob Beneski",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/koa": "^2.11.3",
+    "@types/node": "^13.13.5",
+    "nodemon": "^2.0.3",
+    "typescript": "^3.8.3"
+  },
+  "nodemonConfig": {
+    "watch": "./dist"
+  },
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^8.0.8"
+  }
+}
