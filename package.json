@@ -2,7 +2,7 @@
   "name": "lnkbox",
   "version": "0.0.1",
   "description": "A web-app and desktop tool for keeping track of bookmarks, links and archived content.",
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsc"
