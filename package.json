@@ -2,10 +2,11 @@
   "name": "lnkbox",
   "version": "0.0.1",
   "description": "A web-app and desktop tool for keeping track of bookmarks, links and archived content.",
-  "main": "./src/index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc"
+    "dev": "tsc",
+    "build": "tsc && webpack"
   },
   "keywords": [
     "bookmark",
@@ -18,8 +19,15 @@
   "devDependencies": {
     "@types/koa": "^2.11.3",
     "@types/node": "^13.13.5",
+    "copy-webpack-plugin": "^5.1.1",
+    "file-loader": "^6.0.0",
     "nodemon": "^2.0.3",
-    "typescript": "^3.8.3"
+    "ts-loader": "^7.0.4",
+    "typescript": "^3.8.3",
+    "vue-loader": "^15.9.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   },
   "nodemonConfig": {
     "watch": "./dist"
@@ -29,6 +37,10 @@
     "koa-bodyparser": "^4.3.0",
     "koa-json": "^2.0.2",
     "koa-logger": "^3.2.1",
-    "koa-router": "^8.0.8"
+    "koa-router": "^8.0.8",
+    "koa-static": "^5.0.0",
+    "vue": "^2.6.11",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.2"
   }
 }
