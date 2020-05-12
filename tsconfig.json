@@ -1,9 +1,24 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "allowJs": true,
     "module": "commonjs",
     "moduleResolution": "Node",
-    "watch": true,
-    "lib": ["dom", "ES2017"]
-  }
+    "watch": false,
+    "lib": ["dom", "ES2017"],
+    "noImplicitReturns": true,
+    "outDir": "dist",
+    "sourceMap": true,
+    "rootDir": "src",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "importHelpers": true
+  },
+  "include": [
+    "src/**/*",
+    "src/**/*.vue",
+    "src/web/frontend/public/shims-vue.d.ts",
+    "src/web/frontend/public/*"
+  ],
+  "exclude": ["node_modules"]
 }
