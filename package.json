@@ -20,8 +20,12 @@
     "@types/koa": "^2.11.3",
     "@types/node": "^13.13.5",
     "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.5.3",
     "file-loader": "^6.0.0",
+    "node-sass": "^4.14.1",
     "nodemon": "^2.0.3",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
     "ts-loader": "^7.0.4",
     "typescript": "^3.8.3",
     "vue-loader": "^15.9.2",
@@ -33,6 +37,7 @@
     "watch": "./dist"
   },
   "dependencies": {
+    "bulma": "^0.8.2",
     "koa": "^2.11.0",
     "koa-bodyparser": "^4.3.0",
     "koa-json": "^2.0.2",

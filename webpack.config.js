@@ -4,6 +4,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
 module.exports = {
   entry: "./src/web/frontend/public/index.ts",
+  mode: "development",
   module: {
     rules: [
       {
@@ -15,7 +16,19 @@ module.exports = {
         },
       },
       { test: /\.(png|svg|jpg|gif)$/, use: "file-loader" },
-      { test: /\.vue$/, loader: "vue-loader" },
+      { test: /\.vue$/, use: "vue-loader" },
+      { test: /\.css$/, use: ["style-loader", "css-loader"] },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          "style-loader",
+          // Translates CSS into CommonJS
+          "css-loader",
+          // Compiles Sass to CSS
+          { loader: "sass-loader", options: {} },
+        ],
+      },
     ],
   },
   resolve: {
@@ -31,7 +44,7 @@ module.exports = {
       {
         from: path.resolve(__dirname, "src/web/frontend/public"),
         to: path.resolve(__dirname, "dist/web/frontend/public"),
-        ignore: ["*.ts"],
+        ignore: ["*.ts", "*.scss", "*.vue"],
       },
     ]),
     new VueLoaderPlugin(),
