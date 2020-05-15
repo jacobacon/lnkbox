@@ -2,12 +2,16 @@ import * as Router from "koa-router";
 const router = new Router();
 
 import { createReadStream } from "fs";
-import path = require("path");
+import * as path from "path";
+
+router.get("/:_", async (ctx, next) => {
+  await next();
+});
 
 router.get("/", async (ctx, next) => {
   ctx.type = "html";
   ctx.body = createReadStream(
-    path.join(process.cwd(), "/src/web/frontend/index.html")
+    path.join(process.cwd(), "/dist/web/frontend/public/index.html")
   );
 });
 

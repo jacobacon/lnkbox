@@ -1,0 +1,13 @@
+@import "base";
+
+html {
+  body {
+    min-height: 100vh;
+    min-width: 100vw;
+    background-color: $primary-color;
+  }
+  * {
+    color: $primary-color-text !important;
+  }
+  overflow-y: hidden;
+}

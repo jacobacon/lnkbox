@@ -1,7 +1,5 @@
-console.log("Setting Up...");
+import App from "./app";
 
-import { koaServer } from "./web/web";
+const app = new App();
 
-koaServer.listen(3000, () => {
-  console.log("Listening on port 3000");
-});
+app.startServer();
