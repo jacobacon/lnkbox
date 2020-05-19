@@ -6,8 +6,8 @@ html {
     min-width: 100vw;
     background-color: $primary-color;
   }
-  * {
-    color: $primary-color-text !important;
-  }
+
   overflow-y: hidden;
 }
+
+@import "bulma/bulma.sass"
