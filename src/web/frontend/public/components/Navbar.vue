@@ -22,7 +22,11 @@
       </a>
     </div>
 
-    <div id="navbarContent" class="navbar-menu" :class="showMenu === true ? 'is-active' : ''">
+    <div
+      id="navbarContent"
+      class="navbar-menu"
+      :class="showMenu === true ? 'is-active' : ''"
+    >
       <div class="navbar-start">
         <a class="navbar-item" href="/">Home</a>
       </div>
@@ -102,12 +106,15 @@ export default class Navbar extends Vue {
     background-color: $accent-color;
   }
 
-  .navbar-menu.is-active {
-    background-color: $primary-color;
+  .navbar-menu {
     a.navbar-item:hover {
       color: $primary-text-color;
       background-color: $accent-color;
     }
+  }
+
+  .navbar-menu.is-active {
+    background-color: $primary-color;
   }
 }
 </style>
