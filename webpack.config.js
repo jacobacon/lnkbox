@@ -6,8 +6,7 @@ module.exports = {
   entry: "./src/web/frontend/public/index.ts",
   mode: "development",
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.tsx?$/,
         loader: "ts-loader",
         exclude: "/node_modules/",
@@ -23,8 +22,14 @@ module.exports = {
           esModule: false,
         },
       },
-      { test: /\.vue$/, use: "vue-loader" },
-      { test: /\.css$/, use: ["style-loader", "css-loader"] },
+      {
+        test: /\.vue$/,
+        use: "vue-loader"
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"]
+      },
       {
         test: /\.s[ac]ss$/i,
         use: [
@@ -33,27 +38,30 @@ module.exports = {
           // Translates CSS into CommonJS
           "css-loader",
           // Compiles Sass to CSS
-          { loader: "sass-loader", options: {} },
+          {
+            loader: "sass-loader",
+            options: {}
+          },
         ],
       },
     ],
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".vue"],
-    alias: { vue$: "vue/dist/vue.esm.js" },
+    alias: {
+      vue$: "vue/dist/vue.esm.js"
+    },
   },
   output: {
     filename: "bundle.js",
-    path: path.resolve(__dirname, "dist/public"),
+    path: path.resolve(__dirname, "dist/web/frontend/public"),
   },
   plugins: [
-    new CopyPlugin([
-      {
-        from: path.resolve(__dirname, "src/web/frontend/public"),
-        to: path.resolve(__dirname, "dist/web/frontend/public"),
-        ignore: ["*.ts", "*.scss", "*.vue"],
-      },
-    ]),
+    new CopyPlugin([{
+      from: path.resolve(__dirname, "src/web/frontend/public"),
+      to: path.resolve(__dirname, "dist/web/frontend/public"),
+      ignore: ["*.ts", "*.scss", "*.vue"],
+    }, ]),
     new VueLoaderPlugin(),
   ],
 };
