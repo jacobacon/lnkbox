@@ -4,15 +4,14 @@
     <nav class="breadcrumb boxBreadcrumbs" aria-label="breadcrumbs">
       <ul>
         <li>
-          <a href="/"
-            ><font-awesome-icon icon="home"></font-awesome-icon>&nbsp;Home</a
-          >
+          <a href="/">
+            <font-awesome-icon icon="home"></font-awesome-icon>&nbsp;Home
+          </a>
         </li>
         <li>
-          <a href="#"
-            ><font-awesome-icon icon="folder"></font-awesome-icon
-            >&nbsp;Development</a
-          >
+          <a href="#">
+            <font-awesome-icon icon="folder"></font-awesome-icon>&nbsp;Development
+          </a>
         </li>
       </ul>
     </nav>
@@ -25,22 +24,20 @@
               “There are two hard things in computer science: cache
               invalidation, naming things, and off-by-one errors.”
             </p>
-            <p class="subtitle">
-              Jeff Atwood
-            </p>
+            <p class="subtitle">Jeff Atwood</p>
           </div>
           <footer class="card-footer" v-if="layout === 'full'">
             <p class="card-footer-item">
               <span>
                 View on
-                <a
-                  href="https://twitter.com/codinghorror/status/506010907021828096"
-                  >Twitter</a
-                >
+                <a href="https://twitter.com/codinghorror/status/506010907021828096">Twitter</a>
               </span>
             </p>
             <p class="card-footer-item">
-              <span> Share on <a href="#">Facebook</a> </span>
+              <span>
+                Share on
+                <a href="#">Facebook</a>
+              </span>
             </p>
           </footer>
         </div>
@@ -55,7 +52,7 @@ import Navbar from "./components/Navbar.vue";
 import Layout from "../../../common/types/layout";
 
 @Component({
-  components: { Navbar },
+  components: { Navbar }
 })
 export default class App extends Vue {
   layout: Layout = "full";
@@ -75,14 +72,14 @@ export default class App extends Vue {
 }
 
 .compact {
-  grid-template-columns: repeat(auto-fit, minmax(15vw, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(50vw, 1fr));
   .card-content p {
     font-size: 1rem;
   }
 }
 
 .full {
-  grid-template-columns: repeat(auto-fit, minmax(25vw, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
 }
 
 .table {

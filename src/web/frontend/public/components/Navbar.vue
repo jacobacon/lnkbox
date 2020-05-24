@@ -10,9 +10,11 @@
       <a
         role="button"
         class="navbar-burger burger"
+        :class="showMenu === true ? 'is-active' : ''"
+        @click="showMenu = !showMenu"
         aria-label="menu"
         aria-expanded="false"
-        data-target="navbarBasicExample"
+        data-target="navbarContent"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -20,11 +22,9 @@
       </a>
     </div>
 
-    <div id="navbarContent" class="navbar-menu">
+    <div id="navbarContent" class="navbar-menu" :class="showMenu === true ? 'is-active' : ''">
       <div class="navbar-start">
-        <a class="navbar-item" href="/">
-          Home
-        </a>
+        <a class="navbar-item" href="/">Home</a>
       </div>
 
       <div class="navbar-end">
@@ -78,6 +78,7 @@ import Layout from "../../../../common/types/layout";
 @Component
 export default class Navbar extends Vue {
   layout: Layout = "full";
+  showMenu: boolean = false;
 
   setLayout(newLayout: Layout): void {
     this.$emit("layoutChange", newLayout);
@@ -99,6 +100,14 @@ export default class Navbar extends Vue {
 
   #add-content-button {
     background-color: $accent-color;
+  }
+
+  .navbar-menu.is-active {
+    background-color: $primary-color;
+    a.navbar-item:hover {
+      color: $primary-text-color;
+      background-color: $accent-color;
+    }
   }
 }
 </style>
