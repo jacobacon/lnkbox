@@ -1,12 +1,17 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 
+const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
   entry: "./src/web/frontend/public/index.ts",
-  mode: "development",
+  mode: process.env.NODE_ENV || "production",
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.tsx?$/,
         loader: "ts-loader",
         exclude: "/node_modules/",
@@ -24,11 +29,11 @@ module.exports = {
       },
       {
         test: /\.vue$/,
-        use: "vue-loader"
+        use: "vue-loader",
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.s[ac]ss$/i,
@@ -40,7 +45,7 @@ module.exports = {
           // Compiles Sass to CSS
           {
             loader: "sass-loader",
-            options: {}
+            options: {},
           },
         ],
       },
@@ -49,19 +54,27 @@ module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js", ".vue"],
     alias: {
-      vue$: "vue/dist/vue.esm.js"
+      vue$: "vue/dist/vue.runtime.esm.js",
     },
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin()],
   },
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist/web/frontend/public"),
   },
   plugins: [
-    new CopyPlugin([{
-      from: path.resolve(__dirname, "src/web/frontend/public"),
-      to: path.resolve(__dirname, "dist/web/frontend/public"),
-      ignore: ["*.ts", "*.scss", "*.vue"],
-    }, ]),
+    //new BundleAnalyzerPlugin(),
+    new CompressionPlugin(),
+    new CopyPlugin([
+      {
+        from: path.resolve(__dirname, "src/web/frontend/public"),
+        to: path.resolve(__dirname, "dist/web/frontend/public"),
+        ignore: ["*.ts", "*.scss", "*.vue"],
+      },
+    ]),
     new VueLoaderPlugin(),
   ],
 };
