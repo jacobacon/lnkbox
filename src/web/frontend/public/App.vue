@@ -10,7 +10,8 @@
         </li>
         <li>
           <a href="#">
-            <font-awesome-icon icon="folder"></font-awesome-icon>&nbsp;Development
+            <font-awesome-icon icon="folder"></font-awesome-icon
+            >&nbsp;Development
           </a>
         </li>
       </ul>
@@ -30,7 +31,10 @@
             <p class="card-footer-item">
               <span>
                 View on
-                <a href="https://twitter.com/codinghorror/status/506010907021828096">Twitter</a>
+                <a
+                  href="https://twitter.com/codinghorror/status/506010907021828096"
+                  >Twitter</a
+                >
               </span>
             </p>
             <p class="card-footer-item">
@@ -52,7 +56,7 @@ import Navbar from "./components/Navbar.vue";
 import Layout from "../../../common/types/layout";
 
 @Component({
-  components: { Navbar }
+  components: { Navbar },
 })
 export default class App extends Vue {
   layout: Layout = "full";
@@ -68,18 +72,18 @@ export default class App extends Vue {
 .container {
   display: grid;
   gap: 1rem;
-  padding-bottom: 2rem;
+  padding: 2rem;
 }
 
 .compact {
-  grid-template-columns: repeat(auto-fit, minmax(50vw, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   .card-content p {
     font-size: 1rem;
   }
 }
 
 .full {
-  grid-template-columns: repeat(auto-fit, minmax(25%, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
 .table {
