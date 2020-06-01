@@ -3,6 +3,8 @@ import { koaServer } from "./web/web";
 import * as fs from "fs";
 import * as path from "path";
 
+import Database from "./common/classes/database";
+
 class App {
   constructor() {
     this.setup();
@@ -22,6 +24,10 @@ class App {
         }
       );
     }
+
+    Database.init();
+
+    console.log(`There are: ${Database.entries.count()} entries`);
   }
 
   startServer(portNumber?: number): void {
