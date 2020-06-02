@@ -5,8 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:web": "nodemon cross-env NODE_ENV=development tsc && webpack && node ./dist",
-    "dev": "cross-env NODE_ENV=development ts-node ./src/index.ts",
+    "dev:web": "cross-env NODE_ENV=development nodemon --exec ts-node ./src/index.ts",
     "build:web": "cross-env NODE_ENV=production tsc && webpack"
   },
   "keywords": [
@@ -32,6 +31,7 @@
     "style-loader": "^1.2.1",
     "terser-webpack-plugin": "^3.0.2",
     "ts-loader": "^7.0.5",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.3",
     "vue-loader": "^15.9.2",
     "vue-template-compiler": "^2.6.11",
