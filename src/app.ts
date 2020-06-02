@@ -1,4 +1,4 @@
-import { koaServer } from "./web/web";
+import { server } from "./web/web";
 
 import * as fs from "fs";
 import * as path from "path";
@@ -33,7 +33,7 @@ class App {
   startServer(portNumber?: number): void {
     const port = portNumber || 3000;
 
-    koaServer.listen(port, () => {
+    server.listen(port, () => {
       console.log(`Server is started on port: ${port}`);
     });
   }

@@ -1,9 +1,8 @@
-import * as Router from "koa-router";
-const router = new Router();
+import * as express from "express";
+const router = express.Router();
 
-router.get("/api", async (ctx, next) => {
-  ctx.type = "json";
-  ctx.body = { message: "hello world" };
+router.get("/", (req, res) => {
+  res.json({ hello: "world" });
 });
 
-export { router as apiRouter }
+export { router as apiRouter };
