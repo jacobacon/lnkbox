@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 const CopyPlugin = require("copy-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
@@ -9,7 +10,10 @@ const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
-  entry: ["./src/web/frontend/public/index.ts"],
+  entry: [
+    "webpack-hot-middleware/client",
+    "./src/web/frontend/public/index.ts",
+  ],
   mode: process.env.NODE_ENV || "production",
   module: {
     rules: [
@@ -79,6 +83,8 @@ module.exports = {
     publicPath: "/",
   },
   plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new CleanWebpackPlugin(),
     //Accessible at http://localhost:8888
     new BundleAnalyzerPlugin({
@@ -90,7 +96,6 @@ module.exports = {
       template: path.resolve(__dirname, "src/web/frontend/index.template.html"),
     }),
     new CompressionPlugin(),
-    /*
     new CopyPlugin([
       {
         from: path.resolve(__dirname, "src/web/frontend/public"),
@@ -98,7 +103,6 @@ module.exports = {
         ignore: ["*.ts", "*.scss", "*.vue"],
       },
     ]),
-    */
     new VueLoaderPlugin(),
   ],
 };

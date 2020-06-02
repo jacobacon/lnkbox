@@ -22,8 +22,8 @@ if (process.env.NODE_ENV === "development") {
 
   const compiler = webpack(webpackConfig);
 
-  const webpackDevMiddleware = require("webpack-dev-middleware");
-  app.use(webpackDevMiddleware(compiler));
+  app.use(require("webpack-dev-middleware")(compiler));
+  app.use(require("webpack-hot-middleware")(compiler));
 }
 
 app.use(bodyParser.json());
@@ -31,6 +31,7 @@ app.use(morgan("tiny"));
 
 app.use("/api", apiRouter);
 
+//Serve static content
 app.use(
   express.static(path.resolve(process.cwd(), "dist/web/frontend/public"))
 );
