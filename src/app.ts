@@ -26,8 +26,6 @@ class App {
     }
 
     Database.init();
-
-    console.log(`There are: ${Database.entries.count()} entries`);
   }
 
   startServer(portNumber?: number): void {

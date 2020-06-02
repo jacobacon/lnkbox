@@ -23,10 +23,10 @@ export default class Database {
       const dbName = filename || "lnkbox.db";
       Database._db = new Loki(dbName, {
         autoload: true,
+        autoloadCallback: Database.dbInit,
         autosave: true,
         autosaveInterval: 4000,
       });
-      this.dbInit();
     }
   }
 
@@ -37,6 +37,8 @@ export default class Database {
       Database._entries = Database._db.addCollection("entries", {
         autoupdate: true,
       });
+    } else {
+      console.log(`There are: ${Database._entries.count()} entries`);
     }
   }
 
