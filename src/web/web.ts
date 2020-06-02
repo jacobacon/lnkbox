@@ -14,6 +14,18 @@ import * as path from "path";
 
 const app = express();
 
+// Only include Webpack Middleware in Dev-Mode
+if (process.env.NODE_ENV === "development") {
+  const webpack = require("webpack");
+
+  const webpackConfig = require("../../webpack.config");
+
+  const compiler = webpack(webpackConfig);
+
+  const webpackDevMiddleware = require("webpack-dev-middleware");
+  app.use(webpackDevMiddleware(compiler));
+}
+
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
 
