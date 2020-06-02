@@ -6,6 +6,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 
 const TerserPlugin = require("terser-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
   entry: "./src/web/frontend/public/index.ts",
   mode: process.env.NODE_ENV || "production",
@@ -67,6 +68,7 @@ module.exports = {
   },
   plugins: [
     //new BundleAnalyzerPlugin(),
+    new CleanWebpackPlugin(),
     new CompressionPlugin(),
     new CopyPlugin([
       {
