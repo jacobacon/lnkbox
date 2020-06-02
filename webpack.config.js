@@ -69,11 +69,12 @@ module.exports = {
     minimizer: [new TerserPlugin()],
   },
   devServer: {
+    contentBase: path.join(__dirname, "dist/web/frontend/public"),
     publicPath: "/",
   },
   devtool: "inline-source-map",
   output: {
-    filename: "bundle.js",
+    filename: "[name].[hash].bundle.js",
     path: path.resolve(__dirname, "dist/web/frontend/public"),
     publicPath: "/",
   },
