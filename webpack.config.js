@@ -80,9 +80,11 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    //Accessible at http://localhost:8888
     new BundleAnalyzerPlugin({
       analyzerMode:
         process.env.NODE_ENV === "development" ? "server" : "disabled",
+      openAnalyzer: false,
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src/web/frontend/index.template.html"),
