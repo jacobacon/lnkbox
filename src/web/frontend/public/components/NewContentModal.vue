@@ -23,7 +23,7 @@
               <span class="select is-fullwidth">
                 <select v-model="contentType">
                   <option selected value="link">Link</option>
-                  <option value="text">Text</option>
+                  <option value="text">Text / Note</option>
                   <option value="folder">Folder</option></select
                 >
               </span>
@@ -61,10 +61,31 @@
           </div>
         </div>
         <div v-if="contentType === 'folder'">
-          FOLDER
+          <div class="field is-horizontal has-addons has-addons-centered">
+            <div class="field-label is-normal">
+              <label class="label">Folder Name</label>
+            </div>
+            <div class="field-body">
+              <p class="control is-expanded">
+                <input class="input" type="text" placeholder="My New Folder" />
+              </p>
+            </div>
+          </div>
         </div>
         <div v-if="contentType === 'text'">
-          TEXT
+          <div class="field is-horizontal">
+            <div class="field-label is-normal"></div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <textarea
+                    class="textarea"
+                    placeholder="The quick brown fox jumped over the lazy dog."
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
       <footer class="modal-card-foot">
@@ -84,6 +105,7 @@ import ContentType from "../../../../common/types/contentType";
 export default class NewContentModal extends Vue {
   @Prop({ default: false }) readonly showModal: boolean;
 
+  //Default content type is a link.
   contentType: ContentType = "link";
 
   async submitContent(): Promise<void> {
