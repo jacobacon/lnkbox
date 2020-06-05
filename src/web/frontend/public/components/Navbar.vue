@@ -70,7 +70,8 @@
               id="add-content-button"
               @click="$emit('toggleModal')"
             >
-              <strong>Add to Box</strong>
+              <font-awesome-icon icon="plus-square"></font-awesome-icon
+              ><strong>&nbsp;Add content</strong>
             </a>
           </div>
         </div>
