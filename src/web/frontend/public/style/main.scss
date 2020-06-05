@@ -1,4 +1,5 @@
 @import "base";
+@import "animations";
 
 html {
   body {
@@ -10,4 +11,4 @@ html {
   overflow-y: hidden;
 }
 
-@import "bulma/bulma.sass"
+@import "bulma/bulma.sass";
