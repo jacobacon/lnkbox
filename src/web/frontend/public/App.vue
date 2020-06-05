@@ -1,6 +1,9 @@
 <template>
   <div>
-    <Navbar v-on:layoutChange="layoutChange($event)"></Navbar>
+    <Navbar
+      v-on:layoutChange="layoutChange($event)"
+      v-on:toggleModal="showModal = !showModal"
+    ></Navbar>
     <nav class="breadcrumb boxBreadcrumbs" aria-label="breadcrumbs">
       <ul>
         <li>
@@ -47,6 +50,27 @@
         </div>
       </div>
     </div>
+    <div class="modal" :class="this.showModal ? 'is-active fadeIn' : 'fadeOut'">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Modal title</p>
+          <button
+            class="delete"
+            aria-label="close"
+            @click="showModal = false"
+          ></button>
+        </header>
+        <section class="modal-card-body">
+          <!-- Content ... -->
+          Some content goes here.
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success">Save changes</button>
+          <button class="button">Cancel</button>
+        </footer>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -60,6 +84,7 @@ import Layout from "../../../common/types/layout";
 })
 export default class App extends Vue {
   layout: Layout = "full";
+  showModal: boolean = false;
 
   layoutChange(newLayout: Layout): void {
     this.layout = newLayout;
@@ -69,6 +94,7 @@ export default class App extends Vue {
 
 <style lang="scss">
 @import "./style/_base.scss";
+
 .container {
   display: grid;
   gap: 1rem;

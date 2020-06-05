@@ -65,7 +65,11 @@
         </div>
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button" id="add-content-button">
+            <a
+              class="button"
+              id="add-content-button"
+              @click="$emit('toggleModal')"
+            >
               <strong>Add to Box</strong>
             </a>
           </div>
