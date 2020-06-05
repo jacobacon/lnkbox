@@ -50,37 +50,21 @@
         </div>
       </div>
     </div>
-    <div class="modal" :class="this.showModal ? 'is-active fadeIn' : 'fadeOut'">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Modal title</p>
-          <button
-            class="delete"
-            aria-label="close"
-            @click="showModal = false"
-          ></button>
-        </header>
-        <section class="modal-card-body">
-          <!-- Content ... -->
-          Some content goes here.
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-success">Save changes</button>
-          <button class="button">Cancel</button>
-        </footer>
-      </div>
-    </div>
+    <NewContentModal
+      :showModal="showModal"
+      v-on:toggleModal="showModal = !showModal"
+    ></NewContentModal>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Navbar from "./components/Navbar.vue";
+import NewContentModal from "./components/NewContentModal.vue";
 import Layout from "../../../common/types/layout";
 
 @Component({
-  components: { Navbar },
+  components: { Navbar, NewContentModal },
 })
 export default class App extends Vue {
   layout: Layout = "full";
