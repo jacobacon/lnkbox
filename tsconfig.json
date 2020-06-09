@@ -9,7 +9,6 @@
     "noImplicitReturns": true,
     "outDir": "dist",
     "sourceMap": true,
-    "rootDir": "src",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "importHelpers": true
