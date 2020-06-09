@@ -90,7 +90,10 @@
       </section>
       <footer class="modal-card-foot">
         <button class="button is-success" @click="submitContent">
-          Add
+          Add&nbsp;<font-awesome-icon icon="plus-square"></font-awesome-icon>
+        </button>
+        <button class="button is-danger" @click="$emit('toggleModal')">
+          Cancel&nbsp;<font-awesome-icon icon="ban"></font-awesome-icon>
         </button>
         <button class="button" @click="$emit('toggleModal')">Cancel</button>
       </footer>

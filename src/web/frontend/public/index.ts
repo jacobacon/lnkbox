@@ -20,6 +20,7 @@ import {
   faThList,
   faLink,
   faPlusSquare,
+  faBan,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -34,7 +35,8 @@ library.add(
   faThLarge,
   faTh,
   faLink,
-  faPlusSquare
+  faPlusSquare,
+  faBan
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
