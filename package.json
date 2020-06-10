@@ -51,6 +51,7 @@
     "body-parser": "^1.19.0",
     "bulma": "^0.8.2",
     "express": "^4.17.1",
+    "liquor-tree": "^0.2.70",
     "lokijs": "^1.5.8",
     "morgan": "^1.10.0",
     "vue": "^2.6.11",
