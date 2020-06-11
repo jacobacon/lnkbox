@@ -1,14 +1,8 @@
 <template>
-  <div class="container" :class="this.layout">
+  <div>
+    <div class="container" :class="this.layout" v-if="layout !== 'table'">
     <div v-for="n in 35" :key="n">
-      <router-link :to="String(n)">
-        <div class="card">
-          <div class="card-content">
-            <p class="title">
-              “There are two hard things in computer science: cache
-              invalidation, naming things, and off-by-one errors.”
-            </p>
-            <p class="subtitle">Jeff Atwood</p>
+        <Entry :layout="layout"></Entry>
           </div>
           <footer class="card-footer" v-if="layout === 'full'">
             <p class="card-footer-item">
@@ -36,12 +30,15 @@
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator";
 import Layout from "../../../../common/types/layout";
-@Component
+import Entry from "../components/Entry.vue";
+@Component({
+  components: { Entry },
+})
 export default class Home extends Vue {
   @Prop({ default: "full" }) readonly layout: Layout;
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../style/_base.scss";
 
 .container {
