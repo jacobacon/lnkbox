@@ -4,6 +4,23 @@ import "./style/_base.scss";
 import Vue from "vue";
 import App from "./App.vue";
 
+import VueRouter from "vue-router";
+Vue.use(VueRouter);
+
+import Home from "./components/Home.vue";
+import Entry from "./components/Entry.vue";
+
+const routes = [
+  { name: "home", path: "/", component: Home },
+  { path: "/:entryID", component: Entry },
+  {
+    path: "/:folderID/:entryID",
+    component: Entry,
+  },
+];
+
+const router = new VueRouter({ routes });
+
 //Setup FontAwesome
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -53,4 +70,5 @@ Vue.config.productionTip = false;
 
 new Vue({
   render: (h) => h(App),
+  router,
 }).$mount("#vue");

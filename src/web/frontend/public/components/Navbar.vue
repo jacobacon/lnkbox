@@ -28,11 +28,11 @@
       :class="showMenu === true ? 'is-active' : ''"
     >
       <div class="navbar-start">
-        <a class="navbar-item" href="/">Home</a>
+        <a class="navbar-item" href="/" v-if="$route.name !== 'home'">Home</a>
       </div>
 
       <div class="navbar-end">
-        <div class="navbar-item">
+        <div class="navbar-item" v-if="$route.name === 'home'">
           <div class="field has-addons">
             <p class="control">
               <button
