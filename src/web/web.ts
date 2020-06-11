@@ -22,7 +22,11 @@ if (process.env.NODE_ENV === "development") {
 
   const compiler = webpack(webpackConfig);
 
-  app.use(require("webpack-dev-middleware")(compiler));
+  app.use(
+    require("webpack-dev-middleware")(compiler, {
+      publicPath: webpackConfig.output.publicPath,
+    })
+  );
   app.use(require("webpack-hot-middleware")(compiler));
 }
 
