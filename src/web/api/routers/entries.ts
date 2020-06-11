@@ -5,10 +5,17 @@ import Database from "../../../common/classes/database";
 import Entry from "../../../common/interfaces/entry";
 import contentType from "../../../common/types/contentType";
 
-//import { entry } from "../../../common/types/"
+/*
+Crappy temp docs... TODO replace these with better API docs.
+Endpoints: 
+  - { GET } '/' - Returns a list of all entries
+  - { GET } '/:entryID' - Returns a single entry, or folder
+  - { POST } '/' Create a new entry
+  - { PATCH } '/:entryID' - update an entry
+  - { DELETE } '/:entryID' - Delete an entry, if it is a folder, sets the children to a new directory, or home directory.
+*/
 
 // List entries with optional filtering.
-//
 router.get("/", async (req, res) => {
   const {
     tags,
@@ -44,6 +51,12 @@ router.get("/", async (req, res) => {
   );
 });
 
+// Get a specific entry
+router.get("/:entryID", async (req, res) => {
+  console.log(req.params.entryID);
+  res.json(Database.entries.get(1));
+});
+
 // Create a new entry
 router.post("/", async (req, res) => {
   let newEntry: Entry = {
@@ -55,12 +68,6 @@ router.post("/", async (req, res) => {
     tags: [],
   };
   res.json(Database.entries.insert(newEntry));
-});
-
-// Get a specific entry
-router.get("/:entryID", async (req, res) => {
-  console.log(req.params.entryID);
-  res.json(Database.entries.get(1));
 });
 
 // Update an entry
