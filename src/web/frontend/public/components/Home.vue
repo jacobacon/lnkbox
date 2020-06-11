@@ -1,28 +1,20 @@
 <template>
   <div>
     <div class="container" :class="this.layout" v-if="layout !== 'table'">
-    <div v-for="n in 35" :key="n">
+      <div v-for="n in 35" :key="n">
         <Entry :layout="layout"></Entry>
-          </div>
-          <footer class="card-footer" v-if="layout === 'full'">
-            <p class="card-footer-item">
-              <span>
-                View on
-                <a
-                  href="https://twitter.com/codinghorror/status/506010907021828096"
-                  >Twitter</a
-                >
-              </span>
-            </p>
-            <p class="card-footer-item">
-              <span>
-                Share on
-                <a href="#">Facebook</a>
-              </span>
-            </p>
-          </footer>
-        </div>
-      </router-link>
+      </div>
+    </div>
+    <div v-else class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Content</th>
+            <th>Tags</th>
+          </tr>
+        </thead>
+      </table>
     </div>
   </div>
 </template>
@@ -58,7 +50,10 @@ export default class Home extends Vue {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-.table {
-  grid-template-columns: 1fr;
+.table-container {
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
 }
 </style>
