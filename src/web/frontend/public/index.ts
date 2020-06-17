@@ -10,6 +10,8 @@ Vue.use(VueRouter);
 import Home from "./components/Home.vue";
 import Entry from "./components/Entry.vue";
 
+import entriesModule from "../store/entries";
+
 const routes = [
   { name: "home", path: "/", component: Home },
   { path: "/:entryID", component: Entry },
@@ -20,6 +22,7 @@ const routes = [
 ];
 
 const router = new VueRouter({ routes });
+import Vuex from "vuex";
 
 //Setup FontAwesome
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -66,9 +69,16 @@ import LiquorTree from "liquor-tree";
 
 Vue.use(LiquorTree);
 
+Vue.use(Vuex);
+
+const store = new Vuex.Store({
+  modules: { entriesModule },
+});
+
 Vue.config.productionTip = false;
 
 new Vue({
+  store,
   render: (h) => h(App),
   router,
 }).$mount("#vue");
