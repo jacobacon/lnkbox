@@ -23,16 +23,63 @@ router.get("/", async (req, res) => {
     page,
     contentType,
     pageLength,
+    parentID,
   }: {
     tags: string[];
     page: number;
     contentType: contentType;
     pageLength: number;
+    parentID: number[] | "root"[];
   } = req.query;
 
-  console.log(page);
+  let responseData: apiResponse = {};
 
-  const query = Database.entries.chain();
+  /*
+    0) Filter to parentID if given
+    1) Find all entries that match content type, or don't filter
+    2) Find all entries that match tags, or don't filter
+    3) Find all entries that match tags and contentType
+    4) IF(page) Sort and Cut results from 1-3 into 'pages' of pageLength, or 25 by default
+    5) Return the page requested, or page 1 (Entries 1-25)
+  */
+
+  let filter: {
+    contentType?: object;
+    tags?: object;
+    parentID?: object;
+  } = {};
+
+  if (parentID) {
+    filter.parentID = { $contains: parentID };
+  }
+
+  if (contentType) {
+    filter.contentType = { $eq: contentType };
+  }
+
+  if (tags) {
+    filter.tags = { $contains: tags };
+  }
+
+  let offset = 0;
+  let limit = pageLength || 20;
+
+  if (page > 0) {
+    offset = (page - 1) * limit;
+  }
+
+  responseData.response = {
+    responseMsg: "success",
+    data: Database.entries
+      .chain()
+      .find(filter)
+      .offset(offset)
+      .limit(limit)
+      .data(),
+  };
+
+  res.json(responseData);
+});
 
 // Get a specific entry
 router.get("/:entryID", async (req, res) => {
@@ -106,7 +153,7 @@ router.post("/", async (req, res) => {
     newEntry = {
       contentType,
       url,
-    creationDate: new Date(),
+      creationDate: new Date(),
       userID,
       parentID,
       tags,
@@ -117,7 +164,7 @@ router.post("/", async (req, res) => {
     responseData.response = {
       responseMsg: `${contentType} created`,
       data: newEntry,
-  };
+    };
   }
 
   res.status(statusCode).json(responseData);
