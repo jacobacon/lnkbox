@@ -25,7 +25,11 @@ class App {
       );
     }
 
-    Database.init();
+    let dbName = "";
+    if (process.env.NODE_ENV) {
+      dbName = `lnkbox-${process.env.NODE_ENV}.db`;
+    }
+    Database.init(dbName);
   }
 
   startServer(portNumber?: number): void {
