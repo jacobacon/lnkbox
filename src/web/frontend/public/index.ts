@@ -10,6 +10,8 @@ Vue.use(VueRouter);
 import Home from "./components/Home.vue";
 import Entry from "./components/Entry.vue";
 
+import entries from "../store/entries";
+
 import axios from "axios";
 import * as VueAxios from "vue-axios";
 
@@ -76,7 +78,7 @@ Vue.use(LiquorTree);
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  modules: { entriesModule },
+  modules: { entries },
 });
 
 Vue.config.productionTip = false;
