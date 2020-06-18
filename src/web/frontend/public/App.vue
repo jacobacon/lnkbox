@@ -25,7 +25,6 @@
       :showModal="showModal"
       v-on:toggleModal="showModal = !showModal"
     ></NewContentModal>
-    <router-link to="foo">Go to Foo</router-link>
   </div>
 </template>
 
@@ -44,6 +43,18 @@ export default class App extends Vue {
 
   layoutChange(newLayout: Layout): void {
     this.layout = newLayout;
+  }
+
+  created() {
+    //Get entries from root, and store them in vuex store.
+    this.axios
+      .get("/api/entries?parentID=root")
+      .then((res) => {
+        this.$store.dispatch("addNewEntries", res.data.response.data);
+      })
+      .catch((err) => {
+        alert(err);
+      });
   }
 }
 </script>

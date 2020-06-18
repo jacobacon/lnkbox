@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="container" :class="this.layout" v-if="layout !== 'table'">
-      <div v-for="n in 35" :key="n">
-        <Entry :layout="layout"></Entry>
+      <div v-for="entry in entries" :key="entry.$loki">
+        <Entry :layout="layout" :entry="entry"></Entry>
       </div>
     </div>
     <div v-else class="table-container">
@@ -28,6 +28,10 @@ import Entry from "../components/Entry.vue";
 })
 export default class Home extends Vue {
   @Prop({ default: "full" }) readonly layout: Layout;
+
+  get entries() {
+    return this.$store.state.entries.rootEntries;
+  }
 }
 </script>
 <style lang="scss">
