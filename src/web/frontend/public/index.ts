@@ -10,7 +10,11 @@ Vue.use(VueRouter);
 import Home from "./components/Home.vue";
 import Entry from "./components/Entry.vue";
 
-import entriesModule from "../store/entries";
+import axios from "axios";
+import * as VueAxios from "vue-axios";
+
+//@ts-ignore This wrapper has issues with Typescript
+Vue.use(VueAxios, axios);
 
 const routes = [
   { name: "home", path: "/", component: Home },
