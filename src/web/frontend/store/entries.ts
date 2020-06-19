@@ -16,6 +16,9 @@ const entriesModule = {
     addNewEntries({ commit }, newEntries: [Entry]) {
       commit("addEntries", newEntries);
     },
+    addNewEntry({ commit }, newEntry: Entry) {
+      commit("addEntries", [newEntry]);
+    },
   },
 };
 

@@ -145,7 +145,7 @@ export default class NewContentModal extends Vue {
   linkURL: string = "";
 
   parentFolderID: string[] = ["root"];
-  tags: string[] = [""];
+  tags: string[] = [];
 
   newFolderName: string = "";
 
@@ -218,6 +218,7 @@ export default class NewContentModal extends Vue {
       this.axios
         .post("/api/entries", newEntry)
         .then((res) => {
+          this.$store.dispatch("addNewEntry", newEntry);
           this.$emit("success", newEntry);
           console.log(res);
         })
