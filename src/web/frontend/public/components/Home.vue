@@ -44,14 +44,14 @@ export default class Home extends Vue {
 }
 
 .compact {
-  grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
   .card-content p {
     font-size: 1rem;
   }
 }
 
 .full {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .table-container {
