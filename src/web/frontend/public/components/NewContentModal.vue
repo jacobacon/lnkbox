@@ -50,21 +50,6 @@
         <div v-if="contentType === 'link'">
           <div class="field is-horizontal has-addons has-addons-centered">
             <div class="field-label is-normal">
-              <label class="label">Title</label>
-            </div>
-            <div class="field-body">
-              <p class="control is-expanded">
-                <input
-                  class="input"
-                  type="text"
-                  placeholder="Super cool site!"
-                  v-model="linkTitle"
-                />
-              </p>
-            </div>
-          </div>
-          <div class="field is-horizontal has-addons has-addons-centered">
-            <div class="field-label is-normal">
               <label class="label">URL</label>
             </div>
             <div class="field-body">
@@ -74,6 +59,21 @@
                   type="text"
                   placeholder="https://www.example.com"
                   v-model="linkURL"
+                />
+              </p>
+            </div>
+          </div>
+          <div class="field is-horizontal has-addons has-addons-centered">
+            <div class="field-label is-normal">
+              <label class="label">Title</label>
+            </div>
+            <div class="field-body">
+              <p class="control is-expanded">
+                <input
+                  class="input"
+                  type="text"
+                  placeholder="Super cool site!"
+                  v-model="entryTitle"
                 />
               </p>
             </div>
@@ -90,7 +90,7 @@
                   class="input"
                   type="text"
                   placeholder="My New Folder"
-                  v-model="newFolderName"
+                  v-model="entryTitle"
                 />
               </p>
             </div>
@@ -119,7 +119,7 @@
         <button class="button is-danger" @click="$emit('toggleModal')">
           Cancel&nbsp;<font-awesome-icon icon="ban"></font-awesome-icon>
         </button>
-        {{ linkTitle }}
+        {{ entryTitle }}
         {{ linkURL }}
         {{ newFolderName }}
       </footer>
@@ -130,6 +130,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, Ref } from "vue-property-decorator";
 import ContentType from "../../../../common/types/contentType";
+import Entry from "../../../../common/interfaces/entry";
+import LinkEntry from "../../../../common/classes/linkEntry";
+import FolderEntry from "../../../../common/classes/folderEntry";
 @Component
 export default class NewContentModal extends Vue {
   @Prop({ default: false }) readonly showModal: boolean;
@@ -138,10 +141,10 @@ export default class NewContentModal extends Vue {
   //Default content type is a link.
   contentType: ContentType = "link";
 
-  linkTitle: string = "";
+  entryTitle: string = "";
   linkURL: string = "";
 
-  parentFolderID: string[] = [""];
+  parentFolderID: string[] = ["root"];
   tags: string[] = [""];
 
   newFolderName: string = "";
@@ -184,14 +187,43 @@ export default class NewContentModal extends Vue {
 
     console.log(selected);
 
-    // const resp = await fetch("/api/entries", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({}),
-    // });
-    // console.log(resp.json());
+    /*
+    const newEntry: Entry = {
+      contentType: this.contentType,
+      url: this.linkURL,
+      parentID: this.parentFolderID,
+      userID: 1,
+      title: this.linkTitle,
+      creationDate: new Date(),
+    };
+*/
+
+    let newEntry: Entry;
+
+    if (this.contentType === "link") {
+      newEntry = new LinkEntry(this.linkURL, 1, {
+        title: this.entryTitle,
+        parentID: this.parentFolderID,
+        tags: this.tags,
+      });
+    } else if (this.contentType === "folder") {
+      //TODO
+      newEntry = new FolderEntry(this.entryTitle, 1, {
+        tags: this.tags,
+        parentID: this.parentFolderID,
+      });
+    }
+
+    if (newEntry !== undefined) {
+      this.axios
+        .post("/api/entries", newEntry)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 }
 </script>

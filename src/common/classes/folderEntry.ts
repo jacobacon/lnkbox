@@ -7,7 +7,7 @@ export default class FolderEntry implements Entry {
   parentID: string[];
   tags?: string[];
   constructor(
-    public name: string,
+    public title: string,
     public userID: number,
     options: { parentID?: string[]; tags?: string[] }
   ) {

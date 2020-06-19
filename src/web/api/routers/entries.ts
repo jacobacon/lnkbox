@@ -5,6 +5,8 @@ import Database from "../../../common/classes/database";
 import Entry from "../../../common/interfaces/entry";
 import contentType from "../../../common/types/contentType";
 import apiResponse from "../../../common/types/apiResponse";
+import LinkEntry from "../../../common/classes/linkEntry";
+import FolderEntry from "../../../common/classes/folderEntry";
 
 /*
 Crappy temp docs... TODO replace these with better API docs.
@@ -119,18 +121,20 @@ router.get("/:entryID", async (req, res) => {
 
 // Create a new entry
 router.post("/", async (req, res) => {
-  const {
+  let {
     contentType,
     url,
     userID,
     parentID,
     tags,
+    title,
   }: {
     contentType: contentType;
     url: string;
     userID: number;
-    parentID: number[];
+    parentID: string[];
     tags: string[];
+    title: string;
   } = req.body;
 
   let responseData: apiResponse = {};
@@ -150,6 +154,7 @@ router.post("/", async (req, res) => {
 
   //Easy way to check if an entry was created
   if (statusCode === 200) {
+    /*
     newEntry = {
       contentType,
       url,
@@ -157,14 +162,39 @@ router.post("/", async (req, res) => {
       userID,
       parentID,
       tags,
+      title,
+      validate() {
+        return false;
+      },
     };
+    */
 
-    Database.entries.insert(newEntry);
+    if (contentType === "link") {
+      newEntry = new LinkEntry(url, userID || 1, {
+        parentID,
+        title,
+        tags,
+      });
+    } else if (contentType === "folder") {
+      newEntry = new FolderEntry(title, userID || 1, {
+        parentID,
+        tags,
+      });
+    }
 
-    responseData.response = {
-      responseMsg: `${contentType} created`,
-      data: newEntry,
-    };
+    if (newEntry !== undefined) {
+      console.log("Inserting! " + newEntry);
+      Database.entries.insert(newEntry);
+      responseData.response = {
+        responseMsg: `${contentType} created`,
+        data: newEntry,
+      };
+    } else {
+      responseData.error = {
+        errorMsg: "Unable to create new Entry",
+        error: "InternalError",
+      };
+    }
   }
 
   res.status(statusCode).json(responseData);
