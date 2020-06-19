@@ -218,6 +218,7 @@ export default class NewContentModal extends Vue {
       this.axios
         .post("/api/entries", newEntry)
         .then((res) => {
+          this.$emit("success", newEntry);
           console.log(res);
         })
         .catch((err) => {

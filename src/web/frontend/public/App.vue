@@ -24,6 +24,7 @@
     <NewContentModal
       :showModal="showModal"
       v-on:toggleModal="showModal = !showModal"
+      v-on:success="showModal = !showModal"
     ></NewContentModal>
   </div>
 </template>
