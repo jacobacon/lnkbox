@@ -8,7 +8,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import Home from "./components/Home.vue";
-import Entry from "./components/Entry.vue";
+import EntryPage from "./components/EntryPage.vue";
 
 import entries from "../store/entries";
 
@@ -20,10 +20,10 @@ Vue.use(VueAxios, axios);
 
 const routes = [
   { name: "home", path: "/", component: Home },
-  { path: "/:entryID", component: Entry },
+  { path: "/:entryID", component: EntryPage },
   {
     path: "/:folderID/:entryID",
-    component: Entry,
+    component: EntryPage,
   },
 ];
 
