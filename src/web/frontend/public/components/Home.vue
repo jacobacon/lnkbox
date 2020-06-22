@@ -1,11 +1,14 @@
 <template>
   <div>
+    <div v-if="entries.length === 0" class="empty-container">
+      <div class="empty">Nothing here!</div>
+    </div>
     <div class="container" :class="this.layout" v-if="layout !== 'table'">
       <div v-for="entry in entries" :key="entry.$loki">
         <Entry :layout="layout" :entry="entry"></Entry>
       </div>
     </div>
-    <div v-else class="table-container">
+    <div v-else-if="layout === 'table'" class="table-container">
       <table class="table">
         <thead>
           <tr>
@@ -59,5 +62,14 @@ export default class Home extends Vue {
   min-height: 100%;
   display: flex;
   justify-content: center;
+}
+
+.empty-container {
+  display: flex;
+  justify-content: center;
+}
+
+.empty {
+  font-size: 3rem;
 }
 </style>
