@@ -2,12 +2,24 @@
   <div class="card">
     <div class="card-content">
       <p class="title">
-        <a :href="entry.url" v-if="type === 'link'">{{ title }}</a>
-        <span v-else
+        <a :href="entry.url" v-if="type === 'link'"
+          ><font-awesome-icon icon="link"></font-awesome-icon>&nbsp;{{
+            title
+          }}</a
+        >
+        <!-- Create a link to EntryPage to view the contents of the folder. 
+        
+        Hacky method to convert $loki to a string -->
+        <router-link v-else :to="'' + entry.$loki"
           ><font-awesome-icon icon="folder"></font-awesome-icon>&nbsp;{{
             title
-          }}</span
+          }}</router-link
         >
+        {{ entry.$loki }}
+      </p>
+      <hr />
+      <p class="subtitle">
+        <span class="tag" v-for="tag in entry.tags" :key="tag">{{ tag }}</span>
       </p>
     </div>
     <footer class="card-footer" v-if="layout === 'full'">
@@ -44,7 +56,29 @@ export default class Entry extends Vue {
   title: string = "";
 
   created() {
-    this.title = this.entry.title || this.entry.url;
+    this.title = this.entry.title;
+  }
+
+  get folderLink() {
+    let id = this.entry.$loki;
+    return id;
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.subtitle {
+  display: flex;
+  justify-content: center;
+  .tag {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+.title {
+  a {
+    color: black;
+  }
+}
+</style>
