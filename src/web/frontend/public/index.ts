@@ -21,7 +21,7 @@ Vue.use(VueAxios, axios);
 
 const routes = [
   { name: "home", path: "/", component: Home },
-  { path: "/:entryID", component: EntryPage },
+  { path: "/:entryID(\\d+)", component: EntryPage },
   {
     path: "/folder/:id(\\d+)+",
     component: EntryPage,
