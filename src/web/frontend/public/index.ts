@@ -9,6 +9,7 @@ Vue.use(VueRouter);
 
 import Home from "./components/Home.vue";
 import EntryPage from "./components/EntryPage.vue";
+import NotFound from "./components/404.vue";
 
 import entries from "../store/entries";
 
@@ -22,8 +23,12 @@ const routes = [
   { name: "home", path: "/", component: Home },
   { path: "/:entryID", component: EntryPage },
   {
-    path: "/:folderID/:entryID",
+    path: "/folder/:id(\\d+)+",
     component: EntryPage,
+  },
+  {
+    path: "*",
+    component: NotFound,
   },
 ];
 
