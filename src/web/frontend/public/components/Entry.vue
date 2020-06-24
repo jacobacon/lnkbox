@@ -12,7 +12,7 @@
         </a>
         <!-- Create a link to EntryPage to view the contents of the folder. -->
 
-        <router-link v-else :to="'folder-' + entry.$loki">
+        <router-link v-else :to="'folder/' + entry.$loki">
           <font-awesome-icon icon="folder"></font-awesome-icon>&nbsp;
           <span>
             {{
