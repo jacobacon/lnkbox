@@ -2,20 +2,24 @@
   <div class="card">
     <div class="card-content">
       <p class="title">
-        <a :href="entry.url" v-if="type === 'link'"
-          ><font-awesome-icon icon="link"></font-awesome-icon>&nbsp;{{
+        <a :href="entry.url" v-if="type === 'link'">
+          <font-awesome-icon icon="link"></font-awesome-icon>&nbsp;
+          <span>
+            {{
             title
-          }}</a
-        >
-        <!-- Create a link to EntryPage to view the contents of the folder. 
-        
-        Hacky method to convert $loki to a string -->
-        <router-link v-else :to="'' + entry.$loki"
-          ><font-awesome-icon icon="folder"></font-awesome-icon>&nbsp;{{
+            }}
+          </span>
+        </a>
+        <!-- Create a link to EntryPage to view the contents of the folder. -->
+
+        <router-link v-else :to="'folder-' + entry.$loki">
+          <font-awesome-icon icon="folder"></font-awesome-icon>&nbsp;
+          <span>
+            {{
             title
-          }}</router-link
-        >
-        {{ entry.$loki }}
+            }}
+          </span>
+        </router-link>
       </p>
       <hr />
       <p class="subtitle">
@@ -79,6 +83,9 @@ export default class Entry extends Vue {
 .title {
   a {
     color: black;
+  }
+  span:hover {
+    text-decoration: underline;
   }
 }
 </style>
