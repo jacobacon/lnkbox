@@ -8,16 +8,27 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import Home from "./components/Home.vue";
-import Entry from "./components/Entry.vue";
+import EntryPage from "./components/EntryPage.vue";
+import NotFound from "./components/404.vue";
 
-import entriesModule from "../store/entries";
+import entries from "../store/entries";
+
+import axios from "axios";
+import * as VueAxios from "vue-axios";
+
+//@ts-ignore This wrapper has issues with Typescript
+Vue.use(VueAxios, axios);
 
 const routes = [
   { name: "home", path: "/", component: Home },
-  { path: "/:entryID", component: Entry },
+  { path: "/:entryID(\\d+)", component: EntryPage },
   {
-    path: "/:folderID/:entryID",
-    component: Entry,
+    path: "/folder/:id(\\d+)+",
+    component: EntryPage,
+  },
+  {
+    path: "*",
+    component: NotFound,
   },
 ];
 
@@ -72,7 +83,7 @@ Vue.use(LiquorTree);
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  modules: { entriesModule },
+  modules: { entries },
 });
 
 Vue.config.productionTip = false;

@@ -1,6 +1,9 @@
+import Entry from "../../../common/interfaces/entry";
+
 const entriesModule = {
   state: () => ({
     rootEntries: [],
+    childEntries: [],
   }),
   //Mutations are commited to change the state
   mutations: {
@@ -10,7 +13,12 @@ const entriesModule = {
   },
   //Actions are dispatched & commit mutations
   actions: {
-    initialize({ commit }) {},
+    addNewEntries({ commit }, newEntries: [Entry]) {
+      commit("addEntries", newEntries);
+    },
+    addNewEntry({ commit }, newEntry: Entry) {
+      commit("addEntries", [newEntry]);
+    },
   },
 };
 
