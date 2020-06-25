@@ -27,22 +27,17 @@
       </p>
     </div>
     <footer class="card-footer" v-if="layout === 'full'">
-      <!--
-      <p class="card-footer-item">
-        <span>
-          View on
-          <a href="https://twitter.com/codinghorror/status/506010907021828096"
-            >Twitter</a
-          >
-        </span>
-      </p>
-      <p class="card-footer-item">
-        <span>
-          Share on
-          <a href="#">Facebook</a>
-        </span>
-      </p>
-      -->
+      <span class="card-footer-item" v-if="entry.contentType === 'link'">
+        <a :href="this.entry.url">Hyperlink</a>
+      </span>
+
+      <span class="card-footer-item">
+        <router-link :to="'/' + this.entry.$loki">Permalink</router-link>
+      </span>
+
+      <span class="card-footer-item">
+        <a>Test</a>
+      </span>
     </footer>
   </div>
 </template>
