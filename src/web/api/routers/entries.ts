@@ -8,6 +8,8 @@ import apiResponse from "../../../common/types/apiResponse";
 import LinkEntry from "../../../common/classes/linkEntry";
 import FolderEntry from "../../../common/classes/folderEntry";
 
+import { isUrl } from "../../../common/helpers/validation";
+
 /*
 Crappy temp docs... TODO replace these with better API docs.
 Endpoints: 
@@ -143,7 +145,7 @@ router.post("/", async (req, res) => {
   let newEntry: Entry;
 
   //TODO Validate URL is valid
-  if ((contentType === "link" && url === undefined) || userID === undefined) {
+  if ((contentType === "link" && !isUrl(url)) || userID === undefined) {
     statusCode = 400;
 
     responseData.error = {
@@ -154,21 +156,6 @@ router.post("/", async (req, res) => {
 
   //Easy way to check if an entry was created
   if (statusCode === 200) {
-    /*
-    newEntry = {
-      contentType,
-      url,
-      creationDate: new Date(),
-      userID,
-      parentID,
-      tags,
-      title,
-      validate() {
-        return false;
-      },
-    };
-    */
-
     if (contentType === "link") {
       newEntry = new LinkEntry(url, userID || 1, {
         parentID,
