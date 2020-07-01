@@ -113,15 +113,18 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" @click="submitContent">
-          Add&nbsp;<font-awesome-icon icon="plus-square"></font-awesome-icon>
-        </button>
-        <button class="button is-danger" @click="$emit('toggleModal')">
-          Cancel&nbsp;<font-awesome-icon icon="ban"></font-awesome-icon>
-        </button>
-        {{ entryTitle }}
-        {{ linkURL }}
-        {{ newFolderName }}
+        <div class="buttons has-addons is-right">
+          <button
+            class="button is-success"
+            @click="submitContent"
+            :disabled="!isFormValid"
+          >
+            Add&nbsp;<font-awesome-icon icon="plus-square"></font-awesome-icon>
+          </button>
+          <button class="button is-danger" @click="$emit('toggleModal')">
+            Cancel&nbsp;<font-awesome-icon icon="ban"></font-awesome-icon>
+          </button>
+        </div>
       </footer>
     </div>
   </div>
@@ -133,6 +136,8 @@ import ContentType from "../../../../common/types/contentType";
 import Entry from "../../../../common/interfaces/entry";
 import LinkEntry from "../../../../common/classes/linkEntry";
 import FolderEntry from "../../../../common/classes/folderEntry";
+
+import { isUrl } from "../../../../common/helpers/validation";
 @Component
 export default class NewContentModal extends Vue {
   @Prop({ default: false }) readonly showModal: boolean;
@@ -141,13 +146,11 @@ export default class NewContentModal extends Vue {
   //Default content type is a link.
   contentType: ContentType = "link";
 
-  entryTitle: string = "";
+  entryTitle: string = ""; // For links, this is the title of the URL, for folders it's the name of the folder.
   linkURL: string = "";
 
   parentFolderID: string[] = ["root"];
   tags: string[] = [];
-
-  newFolderName: string = "";
 
   text: string = "";
 
@@ -169,6 +172,23 @@ export default class NewContentModal extends Vue {
   };
 
   selected: any = [];
+
+  get validateUrl(): boolean {
+    return isUrl(this.linkURL);
+  }
+
+  get isFormValid(): boolean {
+    let result = false;
+    if (this.contentType === "link") {
+      result = this.validateUrl;
+    } else if (this.contentType === "folder") {
+      result = this.entryTitle !== "";
+      console.log(
+        `Folder: ${this.entryTitle} -- Matches: ${this.entryTitle !== ""}`
+      );
+    }
+    return result;
+  }
 
   mounted() {
     // @ts-ignore
@@ -222,10 +242,26 @@ export default class NewContentModal extends Vue {
           this.$emit("success", newEntry);
           console.log(res);
         })
+        .finally(() => {
+          this.resetForm();
+        })
         .catch((err) => {
           console.log(err);
         });
     }
+  }
+
+  //Resets all form elements to default
+  resetForm() {
+    this.contentType = "link";
+
+    this.entryTitle = "";
+    this.linkURL = "";
+
+    this.parentFolderID = ["root"];
+    this.tags = [];
+
+    this.text = "";
   }
 }
 </script>

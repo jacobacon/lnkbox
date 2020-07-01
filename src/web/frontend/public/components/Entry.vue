@@ -2,12 +2,10 @@
   <div class="card">
     <div class="card-content">
       <p class="title">
-        <a :href="entry.url" v-if="type === 'link'">
+        <a :href="hyperLink" v-if="type === 'link'">
           <font-awesome-icon icon="link"></font-awesome-icon>&nbsp;
           <span>
-            {{
-            title
-            }}
+            {{ title }}
           </span>
         </a>
         <!-- Create a link to EntryPage to view the contents of the folder. -->
@@ -15,9 +13,7 @@
         <router-link v-else :to="'/folder/' + entry.$loki">
           <font-awesome-icon icon="folder"></font-awesome-icon>&nbsp;
           <span>
-            {{
-            title
-            }}
+            {{ title }}
           </span>
         </router-link>
       </p>
@@ -28,7 +24,7 @@
     </div>
     <footer class="card-footer" v-if="layout === 'full'">
       <span class="card-footer-item" v-if="entry.contentType === 'link'">
-        <a :href="this.entry.url">Hyperlink</a>
+        <a :href="hyperLink">Hyperlink</a>
       </span>
 
       <span class="card-footer-item">
@@ -58,9 +54,17 @@ export default class Entry extends Vue {
     this.title = this.entry.title;
   }
 
-  get folderLink() {
+  get folderLink(): number {
     let id = this.entry.$loki;
     return id;
+  }
+
+  get hyperLink(): string {
+    if (this.entry.url.includes("//")) {
+      return this.entry.url;
+    } else {
+      return `//${this.entry.url}`;
+    }
   }
 }
 </script>
