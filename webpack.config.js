@@ -36,6 +36,10 @@ module.exports = {
         },
       },
       {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: ["file-loader"],
+      },
+      {
         test: /\.vue$/,
         include: path.resolve(__dirname, "src"),
         use: "vue-loader",

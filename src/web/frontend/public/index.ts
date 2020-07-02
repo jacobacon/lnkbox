@@ -54,6 +54,7 @@ import {
   faPlusSquare,
   faBan,
   faFolderOpen,
+  faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -70,7 +71,8 @@ library.add(
   faTh,
   faLink,
   faPlusSquare,
-  faBan
+  faBan,
+  faEllipsisV
 );
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);

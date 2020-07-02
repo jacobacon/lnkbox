@@ -1,15 +1,22 @@
 @import "base";
 @import "animations";
 
+@font-face {
+  font-family: "Roboto";
+  src: url("../fonts/Roboto-Regular.ttf");
+}
+
 html {
   body {
     min-height: 100vh;
     min-width: 100vw;
     background-color: $primary-color;
     padding-right: 13px;
+
+    font-family: "Roboto";
   }
 
-  overflow-y: hidden;
+  overflow-y: auto !important;
 }
 
 @import "bulma/bulma.sass";

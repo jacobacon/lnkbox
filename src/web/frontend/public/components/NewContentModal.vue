@@ -4,13 +4,13 @@
     <div class="modal-card">
       <header class="modal-card-head">
         <p class="modal-card-title">
-          <font-awesome-icon icon="plus-square"></font-awesome-icon>&nbsp;Add
-          new {{ contentType }}
+          <font-awesome-icon icon="plus-square"></font-awesome-icon>
+          &nbsp;Add new {{ contentType }}
         </p>
         <button
           class="delete"
           aria-label="close"
-          @click="$emit('toggleModal')"
+          @click="closeModal()"
         ></button>
       </header>
       <section class="modal-card-body">
@@ -24,8 +24,8 @@
                 <select v-model="contentType">
                   <option selected value="link">Link</option>
                   <option value="text">Text / Note</option>
-                  <option value="folder">Folder</option></select
-                >
+                  <option value="folder">Folder</option>
+                </select>
               </span>
             </p>
           </div>
@@ -113,17 +113,21 @@
         </div>
       </section>
       <footer class="modal-card-foot">
-        <div class="buttons has-addons is-right">
-          <button
-            class="button is-success"
-            @click="submitContent"
-            :disabled="!isFormValid"
-          >
-            Add&nbsp;<font-awesome-icon icon="plus-square"></font-awesome-icon>
-          </button>
-          <button class="button is-danger" @click="$emit('toggleModal')">
-            Cancel&nbsp;<font-awesome-icon icon="ban"></font-awesome-icon>
-          </button>
+        <div class="new-entry-buttons">
+          <div class="buttons has-addons is-right">
+            <button
+              class="button is-success"
+              @click="submitContent"
+              :disabled="!isFormValid"
+            >
+              Add&nbsp;
+              <font-awesome-icon icon="plus-square"></font-awesome-icon>
+            </button>
+            <button class="button is-danger" @click="closeModal">
+              Cancel&nbsp;
+              <font-awesome-icon icon="ban"></font-awesome-icon>
+            </button>
+          </div>
         </div>
       </footer>
     </div>
@@ -218,6 +222,7 @@ export default class NewContentModal extends Vue {
     };
 */
 
+    // Create a new Entry object based on contentType
     let newEntry: Entry;
 
     if (this.contentType === "link") {
@@ -227,13 +232,13 @@ export default class NewContentModal extends Vue {
         tags: this.tags,
       });
     } else if (this.contentType === "folder") {
-      //TODO
       newEntry = new FolderEntry(this.entryTitle, 1, {
         tags: this.tags,
         parentID: this.parentFolderID,
       });
     }
 
+    // POST the newEntry to API
     if (newEntry !== undefined) {
       this.axios
         .post("/api/entries", newEntry)
@@ -251,6 +256,11 @@ export default class NewContentModal extends Vue {
     }
   }
 
+  closeModal() {
+    this.resetForm();
+    this.$emit("toggleModal");
+  }
+
   //Resets all form elements to default
   resetForm() {
     this.contentType = "link";
@@ -265,3 +275,10 @@ export default class NewContentModal extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.modal-card-foot {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

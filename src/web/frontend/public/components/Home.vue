@@ -27,7 +27,7 @@ import { Component, Vue, Prop } from "vue-property-decorator";
 import Layout from "../../../../common/types/layout";
 import Entry from "../components/Entry.vue";
 @Component({
-  components: { Entry }
+  components: { Entry },
 })
 export default class Home extends Vue {
   @Prop({ default: "full" }) readonly layout: Layout;
@@ -45,6 +45,7 @@ export default class Home extends Vue {
   gap: 1rem;
   padding-left: 15px;
   padding-right: 15px;
+  padding-bottom: 15px;
 }
 
 .compact {
