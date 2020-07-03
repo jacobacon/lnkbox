@@ -140,12 +140,17 @@ router.post("/", async (req, res) => {
   } = req.body;
 
   let responseData: apiResponse = {};
+  // Assume that everything is alright with the request. Check for possible problems and reject.
   let statusCode: number = 200;
 
   let newEntry: Entry;
 
-  //TODO Validate URL is valid
-  if ((contentType === "link" && !isUrl(url)) || userID === undefined) {
+  // If entry is a link, but not a valid URL, or if parentID isn't an array, return an error.
+  if (
+    (contentType === "link" && !isUrl(url)) ||
+    userID === undefined ||
+    typeof parentID === "string"
+  ) {
     statusCode = 400;
 
     responseData.error = {
@@ -154,8 +159,71 @@ router.post("/", async (req, res) => {
     };
   }
 
-  //Easy way to check if an entry was created
+  // Validate folder
+  else if (contentType === "folder") {
+    // If the parentID is not the root, check if it is a valid sub-folder
+
+    let isParentRoot = true;
+
+    // Check if parentID is undefined
+    // If not undefined, check if parentID includes('root')
+    // If either are not true, then check if parentID is a valid subfolder.
+
+    if (parentID !== undefined) {
+      if (!parentID.includes("root")) {
+        isParentRoot = false;
+      }
+    }
+
+    if (!isParentRoot) {
+      if (parentID.length > 1) {
+        //Incorrect amount of parentIDs (Should be only one)
+        statusCode = 400;
+        responseData.error = {
+          error: "InvalidParameter",
+          errorMsg: "parentID MUST be a single value",
+        };
+        // Correct number of parentIDs (one)
+      } else {
+        //Check if the parentID is a string. If not, just convert it to one.
+        if (typeof parentID[0] === "number") {
+          parentID[0] = String(parentID[0]);
+        }
+        let parent;
+        try {
+          //Check if the parentID is a folder.
+          parent = await Database.entries.get(parentID);
+        } catch (error) {
+          console.log("Couldn't get the parent");
+        }
+
+        //Prevent creating a new Entry if the parent is not a folder.
+        if (parent.contentType !== "folder") {
+          statusCode = 400;
+          responseData.error = {
+            error: "InvalidRequest",
+            errorMsg: "parentID must be a folder",
+          };
+        }
+        console.log(parentID);
+        console.log(parent);
+      }
+
+      // If it passed all conditions, it is a valid folder.
+    }
+    if (!title) {
+      statusCode = 400;
+      responseData.error = {
+        error: "InvalidParameter",
+        errorMsg: "Missing folder title parameter",
+      };
+    }
+  }
+
   if (statusCode === 200) {
+    //If it passed all above checks, an entry is able to be created!
+
+    //Make an object with the correct type of entry.
     if (contentType === "link") {
       newEntry = new LinkEntry(url, userID || 1, {
         parentID,
