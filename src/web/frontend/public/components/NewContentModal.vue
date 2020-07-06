@@ -36,14 +36,7 @@
           </div>
           <div class="field-body">
             <p class="control is-expanded">
-              <tree :data="treeData" :options="treeOptions" ref="tree">
-                <span slot-scope="{ node }">
-                  <font-awesome-icon
-                    :icon="node.expanded() ? 'folder-open' : 'folder'"
-                  ></font-awesome-icon>
-                  {{ node.text }}
-                </span>
-              </tree>
+              <!-- Folder tree goes here! -->
             </p>
           </div>
         </div>
@@ -145,7 +138,6 @@ import { isUrl } from "../../../../common/helpers/validation";
 @Component
 export default class NewContentModal extends Vue {
   @Prop({ default: false }) readonly showModal: boolean;
-  @Ref("tree") readonly tree!: any;
 
   //Default content type is a link.
   contentType: ContentType = "link";
@@ -157,25 +149,6 @@ export default class NewContentModal extends Vue {
   tags: string[] = [];
 
   text: string = "";
-
-  //TODO Tech Debt: Replace this with real folders from API
-  treeData = [
-    {
-      text: "Home",
-      children: [
-        { text: "Development" },
-        { text: "Random", children: [{ text: "Stuff" }] },
-      ],
-    },
-  ];
-
-  private readonly treeOptions = {
-    checkbox: true,
-    checkOnSelect: true,
-    autoCheckChildren: false,
-  };
-
-  selected: any = [];
 
   get validateUrl(): boolean {
     return isUrl(this.linkURL);
@@ -194,34 +167,7 @@ export default class NewContentModal extends Vue {
     return result;
   }
 
-  mounted() {
-    // @ts-ignore
-    console.log(this.$refs.tree.checked());
-
-    // @ts-ignore
-    this.selected = this.$refs.tree.checked();
-    console.log(this.selected);
-
-    //const test = this.tree.selected();
-    //console.log(test);
-  }
-
   async submitContent(): Promise<void> {
-    const selected = this.tree.selected();
-
-    console.log(selected);
-
-    /*
-    const newEntry: Entry = {
-      contentType: this.contentType,
-      url: this.linkURL,
-      parentID: this.parentFolderID,
-      userID: 1,
-      title: this.linkTitle,
-      creationDate: new Date(),
-    };
-*/
-
     // Create a new Entry object based on contentType
     let newEntry: Entry;
 
