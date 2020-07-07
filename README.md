@@ -1,5 +1,7 @@
 # LinkBox - [ Bookmark, Link, Image, ... ] Holder / Manager / Dumpsite
 
+![CI](https://github.com/jacobacon/lnkbox/workflows/CI/badge.svg?branch=master)
+
 ---
 
 - ## What is LnkBox?
