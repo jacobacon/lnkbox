@@ -145,12 +145,13 @@ router.post("/", async (req, res) => {
 
   let newEntry: Entry;
 
-  // If entry is a link, but not a valid URL, or if parentID isn't an array, return an error.
-  if (
-    (contentType === "link" && !isUrl(url)) ||
-    userID === undefined ||
-    typeof parentID === "string"
-  ) {
+  // Convert string to an object
+  if (typeof parentID === "string") {
+    parentID = [parentID];
+  }
+
+  if ((contentType === "link" && !isUrl(url)) || userID === undefined) {
+    // If entry is a link, but not a valid URL, or if parentID isn't an array, return an error.
     statusCode = 400;
 
     responseData.error = {
@@ -205,8 +206,6 @@ router.post("/", async (req, res) => {
             errorMsg: "parentID must be a folder",
           };
         }
-        console.log(parentID);
-        console.log(parent);
       }
 
       // If it passed all conditions, it is a valid folder.

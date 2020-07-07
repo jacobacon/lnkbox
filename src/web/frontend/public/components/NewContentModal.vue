@@ -36,17 +36,18 @@
           </div>
           <div class="field-body">
             <p class="control is-expanded">
-              <tree :data="treeData" :options="treeOptions" ref="tree">
-                <span slot-scope="{ node }">
-                  <font-awesome-icon
-                    :icon="node.expanded() ? 'folder-open' : 'folder'"
-                  ></font-awesome-icon>
-                  {{ node.text }}
-                </span>
-              </tree>
+              <!-- Folder tree goes here! -->
+              <treeselect
+                :options="options"
+                :multiple="contentType !== 'folder'"
+                v-model="selectedFolders"
+                :loadOptions="loadFolderTree"
+                :flat="true"
+              ></treeselect>
             </p>
           </div>
         </div>
+        {{ selectedFolders }}
         <div v-if="contentType === 'link'">
           <div class="field is-horizontal has-addons has-addons-centered">
             <div class="field-label is-normal">
@@ -141,11 +142,13 @@ import Entry from "../../../../common/interfaces/entry";
 import LinkEntry from "../../../../common/classes/linkEntry";
 import FolderEntry from "../../../../common/classes/folderEntry";
 
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+
 import { isUrl } from "../../../../common/helpers/validation";
-@Component
+@Component({ components: { Treeselect } })
 export default class NewContentModal extends Vue {
   @Prop({ default: false }) readonly showModal: boolean;
-  @Ref("tree") readonly tree!: any;
 
   //Default content type is a link.
   contentType: ContentType = "link";
@@ -153,29 +156,13 @@ export default class NewContentModal extends Vue {
   entryTitle: string = ""; // For links, this is the title of the URL, for folders it's the name of the folder.
   linkURL: string = "";
 
-  parentFolderID: string[] = ["root"];
   tags: string[] = [];
 
   text: string = "";
 
-  //TODO Tech Debt: Replace this with real folders from API
-  treeData = [
-    {
-      text: "Home",
-      children: [
-        { text: "Development" },
-        { text: "Random", children: [{ text: "Stuff" }] },
-      ],
-    },
-  ];
+  selectedFolders: string[] = ["root"];
 
-  private readonly treeOptions = {
-    checkbox: true,
-    checkOnSelect: true,
-    autoCheckChildren: false,
-  };
-
-  selected: any = [];
+  options = null;
 
   get validateUrl(): boolean {
     return isUrl(this.linkURL);
@@ -187,54 +174,24 @@ export default class NewContentModal extends Vue {
       result = this.validateUrl;
     } else if (this.contentType === "folder") {
       result = this.entryTitle !== "";
-      console.log(
-        `Folder: ${this.entryTitle} -- Matches: ${this.entryTitle !== ""}`
-      );
     }
     return result;
   }
 
-  mounted() {
-    // @ts-ignore
-    console.log(this.$refs.tree.checked());
-
-    // @ts-ignore
-    this.selected = this.$refs.tree.checked();
-    console.log(this.selected);
-
-    //const test = this.tree.selected();
-    //console.log(test);
-  }
-
   async submitContent(): Promise<void> {
-    const selected = this.tree.selected();
-
-    console.log(selected);
-
-    /*
-    const newEntry: Entry = {
-      contentType: this.contentType,
-      url: this.linkURL,
-      parentID: this.parentFolderID,
-      userID: 1,
-      title: this.linkTitle,
-      creationDate: new Date(),
-    };
-*/
-
     // Create a new Entry object based on contentType
     let newEntry: Entry;
 
     if (this.contentType === "link") {
       newEntry = new LinkEntry(this.linkURL, 1, {
         title: this.entryTitle,
-        parentID: this.parentFolderID,
+        parentID: this.selectedFolders,
         tags: this.tags,
       });
     } else if (this.contentType === "folder") {
       newEntry = new FolderEntry(this.entryTitle, 1, {
         tags: this.tags,
-        parentID: this.parentFolderID,
+        parentID: this.selectedFolders,
       });
     }
 
@@ -256,19 +213,57 @@ export default class NewContentModal extends Vue {
     }
   }
 
-  closeModal() {
+  // Load and format folders for tree selection
+  async loadFolderTree({ action, parentNode }): Promise<void> {
+    // Load folders for ("root")
+    if (action === "LOAD_ROOT_OPTIONS") {
+      let resp = await this.axios.get(
+        "/api/entries?contentType=folder&parentID=root"
+      );
+
+      const folders = resp.data.response.data;
+
+      let children = folders.map((folder) => ({
+        id: `${folder.$loki}`,
+        label: folder.title,
+        children: null,
+      }));
+
+      this.options = [{ id: "root", label: "Home", children: children }];
+    }
+
+    // Load a folders children, and add their elements to the parent node.
+    if (action === "LOAD_CHILDREN_OPTIONS") {
+      let resp = await this.axios.get(
+        `/api/entries?contentType=folder&parentID=${parentNode.id}`
+      );
+
+      const folders = resp.data.response.data;
+
+      const children = folders.map((folder) => ({
+        id: `${folder.$loki}`,
+        label: folder.title,
+        children: null,
+      }));
+      parentNode.children = children;
+    }
+
+    return;
+  }
+
+  closeModal(): void {
     this.resetForm();
     this.$emit("toggleModal");
   }
 
   //Resets all form elements to default
-  resetForm() {
+  resetForm(): void {
     this.contentType = "link";
 
     this.entryTitle = "";
     this.linkURL = "";
 
-    this.parentFolderID = ["root"];
+    this.selectedFolders = ["root"];
     this.tags = [];
 
     this.text = "";

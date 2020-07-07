@@ -77,11 +77,6 @@ library.add(
 
 Vue.component("font-awesome-icon", FontAwesomeIcon);
 
-//Setup LiquorTree
-import LiquorTree from "liquor-tree";
-
-Vue.use(LiquorTree);
-
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
