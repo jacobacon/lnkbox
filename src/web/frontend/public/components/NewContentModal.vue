@@ -37,6 +37,13 @@
           <div class="field-body">
             <p class="control is-expanded">
               <!-- Folder tree goes here! -->
+              <treeselect
+                :options="options"
+                :multiple="contentType !== 'folder'"
+                v-model="selectedFolders"
+                :loadOptions="loadFolderTree"
+                :flat="true"
+              ></treeselect>
             </p>
           </div>
         </div>
@@ -134,8 +141,11 @@ import Entry from "../../../../common/interfaces/entry";
 import LinkEntry from "../../../../common/classes/linkEntry";
 import FolderEntry from "../../../../common/classes/folderEntry";
 
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+
 import { isUrl } from "../../../../common/helpers/validation";
-@Component
+@Component({ components: { Treeselect } })
 export default class NewContentModal extends Vue {
   @Prop({ default: false }) readonly showModal: boolean;
 
@@ -150,6 +160,10 @@ export default class NewContentModal extends Vue {
 
   text: string = "";
 
+  selectedFolders: string[] = [];
+
+  options = null;
+
   get validateUrl(): boolean {
     return isUrl(this.linkURL);
   }
@@ -160,9 +174,6 @@ export default class NewContentModal extends Vue {
       result = this.validateUrl;
     } else if (this.contentType === "folder") {
       result = this.entryTitle !== "";
-      console.log(
-        `Folder: ${this.entryTitle} -- Matches: ${this.entryTitle !== ""}`
-      );
     }
     return result;
   }
@@ -202,13 +213,51 @@ export default class NewContentModal extends Vue {
     }
   }
 
-  closeModal() {
+  // Load and format folders for tree selection
+  async loadFolderTree({ action, parentNode }): Promise<void> {
+    // Load folders for ("root")
+    if (action === "LOAD_ROOT_OPTIONS") {
+      let resp = await this.axios.get(
+        "/api/entries?contentType=folder&parentID=root"
+      );
+
+      const folders = resp.data.response.data;
+
+      let children = folders.map((folder) => ({
+        id: folder.$loki,
+        label: folder.title,
+        children: null,
+      }));
+
+      this.options = [{ id: "root", label: "Home", children: children }];
+    }
+
+    // Load a folders children, and add their elements to the parent node.
+    if (action === "LOAD_CHILDREN_OPTIONS") {
+      let resp = await this.axios.get(
+        `/api/entries?contentType=folder&parentID=${parentNode.id}`
+      );
+
+      const folders = resp.data.response.data;
+
+      const children = folders.map((folder) => ({
+        id: folder.$loki,
+        label: folder.title,
+        children: null,
+      }));
+      parentNode.children = children;
+    }
+
+    return;
+  }
+
+  closeModal(): void {
     this.resetForm();
     this.$emit("toggleModal");
   }
 
   //Resets all form elements to default
-  resetForm() {
+  resetForm(): void {
     this.contentType = "link";
 
     this.entryTitle = "";
