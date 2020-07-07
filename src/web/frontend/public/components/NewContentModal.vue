@@ -47,6 +47,7 @@
             </p>
           </div>
         </div>
+        {{ selectedFolders }}
         <div v-if="contentType === 'link'">
           <div class="field is-horizontal has-addons has-addons-centered">
             <div class="field-label is-normal">
@@ -155,12 +156,11 @@ export default class NewContentModal extends Vue {
   entryTitle: string = ""; // For links, this is the title of the URL, for folders it's the name of the folder.
   linkURL: string = "";
 
-  parentFolderID: string[] = ["root"];
   tags: string[] = [];
 
   text: string = "";
 
-  selectedFolders: string[] = [];
+  selectedFolders: string[] = ["root"];
 
   options = null;
 
@@ -185,13 +185,13 @@ export default class NewContentModal extends Vue {
     if (this.contentType === "link") {
       newEntry = new LinkEntry(this.linkURL, 1, {
         title: this.entryTitle,
-        parentID: this.parentFolderID,
+        parentID: this.selectedFolders,
         tags: this.tags,
       });
     } else if (this.contentType === "folder") {
       newEntry = new FolderEntry(this.entryTitle, 1, {
         tags: this.tags,
-        parentID: this.parentFolderID,
+        parentID: this.selectedFolders,
       });
     }
 
@@ -224,7 +224,7 @@ export default class NewContentModal extends Vue {
       const folders = resp.data.response.data;
 
       let children = folders.map((folder) => ({
-        id: folder.$loki,
+        id: `${folder.$loki}`,
         label: folder.title,
         children: null,
       }));
@@ -241,7 +241,7 @@ export default class NewContentModal extends Vue {
       const folders = resp.data.response.data;
 
       const children = folders.map((folder) => ({
-        id: folder.$loki,
+        id: `${folder.$loki}`,
         label: folder.title,
         children: null,
       }));
@@ -263,7 +263,7 @@ export default class NewContentModal extends Vue {
     this.entryTitle = "";
     this.linkURL = "";
 
-    this.parentFolderID = ["root"];
+    this.selectedFolders = ["root"];
     this.tags = [];
 
     this.text = "";
