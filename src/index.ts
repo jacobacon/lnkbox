@@ -2,4 +2,6 @@ import App from "./app";
 
 const app = new App();
 
-app.startServer();
+let port = Number(process.env.PORT);
+
+app.startServer(port);
