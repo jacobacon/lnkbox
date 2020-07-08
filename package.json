@@ -1,6 +1,6 @@
 {
   "name": "lnkbox",
-  "version": "0.1.0-ALPHA",
+  "version": "0.2.0-ALPHA",
   "description": "A web-app and desktop tool for keeping track of bookmarks, links and archived content.",
   "main": "./dist/index.js",
   "scripts": {
