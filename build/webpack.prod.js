@@ -23,8 +23,8 @@ module.exports = merge(common, {
     new CompressionPlugin(),
     new CopyPlugin([
       {
-        from: path.resolve(process.cwd(), "src/web/frontend/public"),
-        to: path.resolve(process.cwd(), "dist/web/frontend/public"),
+        from: path.resolve(process.cwd(), "src/web/frontend/public/static"),
+        to: path.resolve(process.cwd(), "dist/web/frontend/public/static"),
         ignore: ["*.ts", "*.scss", "*.vue"],
       },
     ]),

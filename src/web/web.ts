@@ -36,8 +36,6 @@ app.use(morgan("tiny"));
 app.use("/api", apiRouter);
 
 //Serve static content
-app.use(
-  express.static(path.resolve(process.cwd(), "dist/web/frontend/public"))
-);
+app.use(express.static(path.join(__dirname, "/frontend/public/static")));
 
 export { app as server };
