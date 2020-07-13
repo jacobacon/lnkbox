@@ -6,9 +6,7 @@ const VueLoaderPlugin = require("vue-loader/lib/plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
-  entry: [
-    path.join(process.cwd(), "/src/web/frontend/public/index.ts"),
-  ],
+  entry: [path.join(process.cwd(), "/src/web/frontend/public/index.ts")],
   module: {
     rules: [
       {
@@ -68,7 +66,7 @@ module.exports = {
   },
   output: {
     filename: "[name].[hash].bundle.js",
-    path: path.resolve(process.cwd(), "dist/web/frontend/public"),
+    path: path.resolve(process.cwd(), "dist/web/frontend/public/static"),
     publicPath: "/",
   },
   plugins: [
