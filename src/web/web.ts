@@ -12,6 +12,10 @@ import { apiRouter } from "./api/routes";
 
 import * as path from "path";
 
+//const expressCompress = require("express-static-gzip");
+
+import * as expressCompress from "express-static-gzip";
+
 const app = express();
 
 // Only include Webpack Middleware in Dev-Mode
@@ -33,9 +37,15 @@ if (process.env.NODE_ENV === "development") {
 app.use(bodyParser.json());
 app.use(morgan("tiny"));
 
-app.use("/api", apiRouter);
-
 //Serve static content
-app.use(express.static(path.join(__dirname, "/frontend/public/static")));
+app.use(
+  "/",
+  expressCompress(path.join(__dirname, "frontend/public/static"), {
+    enableBrotli: true,
+    orderPreference: ["br", "gzip"],
+  })
+);
+
+app.use("/api", apiRouter);
 
 export { app as server };
