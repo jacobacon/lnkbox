@@ -12,11 +12,30 @@
       <table class="table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>Content</th>
+            <th></th>
+            <th>Title</th>
             <th>Tags</th>
+            <th></th>
           </tr>
         </thead>
+        <tbody>
+          <tr v-for="entry in entries" :key="entry.id">
+            <td>
+              <font-awesome-icon :icon="entry.contentType"></font-awesome-icon>
+            </td>
+            <td>
+              <a :href="entry.url || '/#/folder/' + entry.$loki">{{
+                entry.title
+              }}</a>
+            </td>
+            <td>
+              <span class="tag ml-2" v-for="tag in entry.tags" :key="tag">{{
+                tag
+              }}</span>
+            </td>
+            <td><button class="button is-warning">Edit</button></td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -64,6 +83,10 @@ export default class Home extends Vue {
   min-height: 100%;
   display: flex;
   justify-content: center;
+}
+
+.table {
+  width: 95%;
 }
 
 .empty-container {
