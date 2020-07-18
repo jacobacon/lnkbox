@@ -1,4 +1,5 @@
 import Entry from "../../../common/interfaces/entry";
+import axios from "axios";
 
 const entriesModule = {
   state: () => ({
@@ -23,8 +24,17 @@ const entriesModule = {
     addNewEntry({ commit }, newEntry: Entry) {
       commit("addEntries", [newEntry]);
     },
-    loadEntry({ commit }, newEntry: Entry) {
-      commit("setLoadedEntry", newEntry);
+    loadEntry({ commit }, entryID: number) {
+      axios
+        .get(`/api/entries/${entryID}`)
+        .then((resp) => {
+          this.loading = false;
+
+          commit("setLoadedEntry", resp.data.response.data);
+        })
+        .catch((err) => {
+          alert(err);
+        });
     },
   },
 };

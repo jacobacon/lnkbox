@@ -21,10 +21,14 @@ import EntryType from "../../../../common/interfaces/entry";
 @Component({ components: { Entry } })
 export default class EntryPage extends Vue {
   loading: boolean = true;
-  entry: any = null;
+
   folderID: number = null;
 
   childEntries: [any] = null;
+
+  get entry(): Entry {
+    return this.$store.state.entries.loadedEntry;
+  }
 
   created() {
     this.folderID = this.getEntryID();
@@ -34,16 +38,7 @@ export default class EntryPage extends Vue {
 
   @Watch("$route")
   async getEntry() {
-    this.axios
-      .get(`/api/entries/${this.getEntryID()}`)
-      .then(resp => {
-        this.loading = false;
-
-        this.entry = resp.data.response.data;
-      })
-      .catch(err => {
-        alert(err);
-      });
+    this.$store.dispatch("loadEntry", this.getEntryID());
   }
 
   @Watch("$route")
