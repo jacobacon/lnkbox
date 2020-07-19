@@ -329,4 +329,50 @@ router.delete("/:entryID", async (req, res) => {
   res.status(statusCode).json(responseData);
 });
 
+router.get("/:entryID/parents", async (req, res) => {
+  let responseData: apiResponse = {};
+
+  let statusCode: number = 200;
+
+  let entryFolderTree = [];
+
+  //This is the bottom of the tree. We will work up from this point until we reach an entry with "root" as it's parent
+  entryFolderTree.push(Database.entries.get(req.params.entryID));
+
+  if (entryFolderTree[0].contentType !== "folder") {
+    statusCode = 400;
+
+    responseData.error = {
+      error: "InvalidParameter",
+      errorMsg: "Requested entryID is not a folder",
+    };
+  } else {
+    let index = 0;
+    let foundRoot = false;
+    //Load initial parentID from bottom of the tree
+    let parentID = entryFolderTree[0].parentID[0];
+
+    //  Folders can only have one parentID so this is 'safe'  ¯\_(ツ)_/¯
+    //Loop until we find an entry with 'root' as the parentID, or we hit 50000 levels deep.
+    while (!foundRoot && parentID.length === 1 && index < 5000) {
+      let parentEntry: Entry = Database.entries.get(parentID);
+
+      if (parentEntry.parentID.includes("root")) {
+        foundRoot = true;
+      }
+
+      //Add to the start of the array
+      entryFolderTree.unshift(parentEntry);
+      index++;
+    }
+
+    responseData.response = {
+      responseMsg: "parents",
+      data: entryFolderTree,
+    };
+  }
+
+  res.status(statusCode).json(responseData);
+});
+
 export { router as entries };
