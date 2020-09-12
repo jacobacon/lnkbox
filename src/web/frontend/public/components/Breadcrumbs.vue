@@ -9,19 +9,41 @@
       <li v-for="folder in folders" :key="folder">
         <a href="#">
           <font-awesome-icon icon="folder"></font-awesome-icon>
-          &nbsp;{{ folder[0].toUpperCase() + folder.slice(1) }}
+          &nbsp;{{ folder.title[0].toUpperCase() + folder.slice(1) }}
         </a>
       </li>
     </ul>
+    {{ folders }}
   </nav>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import Entry from "../../../../common/interfaces/entry";
 
 @Component
 export default class Breadcrumbs extends Vue {
-  folders = ["test", "development", "meow"];
+  //folders: Entry[] = [];
+  folders: any = [];
+
+  async mounted(): Promise<void> {
+    this.loadParents();
+  }
+  @Watch("$route")
+  async loadParents(): Promise<void> {
+    console.log(this.$route);
+    if (this.$route.name !== "/") {
+      const loadedFolder = this.$store.state.entries.loadedEntry;
+
+      console.log("Loaded Folder:", loadedFolder);
+      const loadedFolderID = Number(loadedFolder.$loki + "");
+
+      console.log(loadedFolderID);
+      const apiResponse = await this.axios.get(`/api/entries/${4}/parents`);
+
+      this.folders = apiResponse.data;
+    }
+  }
 }
 </script>
 

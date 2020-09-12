@@ -39,6 +39,7 @@ export default class EntryPage extends Vue {
   @Watch("$route")
   async getEntry() {
     this.$store.dispatch("loadEntry", this.getEntryID());
+    this.loading = false;
   }
 
   @Watch("$route")
